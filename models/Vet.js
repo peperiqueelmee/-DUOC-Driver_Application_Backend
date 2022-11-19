@@ -25,6 +25,10 @@ const vetSchema = moogoose.Schema({
         default: null,
         trim: true,
     },
+    isDriver: {
+        type: Boolean,
+        default: false
+    },
     token: {
         type: String,
         default: generarId(),
