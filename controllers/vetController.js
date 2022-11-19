@@ -96,6 +96,7 @@ const autenticate = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        isDriver: user.isDriver,
         token: generateJWT(user.id)
     });
 };
