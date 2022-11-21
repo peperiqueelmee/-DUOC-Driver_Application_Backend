@@ -10,7 +10,7 @@ const register = async (req, res) => {
     const { email, name } = req.body;
 
     //Prevent duplicates user
-    const exitstUser = await Vet.findOne({ email })
+    const exitstUser = await Vet.findOne({ email }).collation({locale:'en', strength: 2});
 
     if (exitstUser) {
         const error = new Error("Usuario ya registrado");
@@ -71,7 +71,7 @@ const autenticate = async (req, res) => {
     const { email, password } = req.body
 
     //Get user
-    const user = await Vet.findOne({ email });
+    const user = await Vet.findOne({ email }).collation({locale:'en', strength: 2});
 
     //Check if exists user
     if (!user) {
@@ -106,7 +106,7 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     //Get User
-    const user = await Vet.findOne({ email });
+    const user = await Vet.findOne({ email }).collation({locale:'en', strength: 2});
 
     //Check if exists user
     if (!user) {
