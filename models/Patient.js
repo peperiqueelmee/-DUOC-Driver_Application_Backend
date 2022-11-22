@@ -3,26 +3,20 @@ import moogoose from 'mongoose';
 
 
 const patientSchema = moogoose.Schema({
-    name: {
+    destiny: {
         type: String,
         required: true,
         trim: true,
     },
-    owner: {
+    date :{
         type: String,
         required: true,
     },
-    email: {
+    hour: {
         type: String,
         required: true,
-        trim: true,
     },
-    date:{
-        type: Date,
-        required: true,
-        default: Date.now()
-    },
-    symptoms:{
+    name_driver: {
         type: String,
         required: true,
     },
@@ -30,6 +24,21 @@ const patientSchema = moogoose.Schema({
         type: moogoose.Schema.Types.ObjectId,
         ref: 'Vet',
     },
+    name_passenger: {
+        type: String,
+        required: true,
+        default: 'Sin pasajero'
+    },
+    passenger: {
+        type: moogoose.Schema.Types.ObjectId,
+        ref: 'Vet',
+        required: false,
+    },
+    status: {
+        type: String,
+        required: true,
+        default: 'Disponible',
+    }
 },
     {
         timestamps: true
