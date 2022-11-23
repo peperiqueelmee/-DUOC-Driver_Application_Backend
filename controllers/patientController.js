@@ -20,6 +20,11 @@ const getPatients = async (req, res) => {
     res.json(patients);
 }
 
+const getAllTrips = async (req, res) => {
+    const trips = await Patient.find().where('status').equals('Disponible');
+    res.json(trips);
+}
+
 
 const getPatient = async (req, res) => {
     const { id } = req.params;
@@ -38,29 +43,22 @@ const getPatient = async (req, res) => {
 }
 
 
-const updatePatient = async (req, res) => {
+const bookTrip = async (req, res) => {
     const { id } = req.params;
 
-    const patient = await Patient.findById(id);
+    const trip = await Patient.findById(id);
 
-    if (!patient) {
+    if (!trip) {
         res.status(404).json({ msg: "No encontrado" });
     }
 
-    if (patient.vet._id.toString() !== req.vet._id.toString()) {
-        return res.json({ msg: 'Acción no valida' });
-    }
-
-    //Update Patient
-    patient.name = req.body.name || patient.name;
-    patient.owner = req.body.owner || patient.owner;
-    patient.email = req.body.email || patient.email;
-    patient.date = req.body.date || patient.date;
-    patient.symptoms = req.body.symptoms || patient.symptoms;
-
+    //Update trip
+    trip.name_passenger = req.body.name_passenger;
+    trip.passenger = req.vet._id;
+    trip.status = "Confirmado";
     try {
-        const patientUpdated = await patient.save();
-        return res.json(patientUpdated);
+        const tripUpdated = await trip.save();
+        return res.json(tripUpdated);
     } catch (error) {
         console.log(error);
     }
@@ -94,7 +92,8 @@ const deletePatient = async (req, res) => {
 export {
     addPatient,
     getPatients,
+    getAllTrips,
     getPatient,
-    updatePatient,
+    bookTrip,
     deletePatient
 }

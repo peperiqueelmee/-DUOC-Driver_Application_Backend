@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import {
     addPatient,
+    bookTrip,
     getPatients,
+    getAllTrips,
     getPatient,
-    updatePatient,
     deletePatient
 } from '../controllers/patientController.js'
 import checkAuth from '../middlewares/autMiddleware.js';
@@ -20,8 +21,10 @@ router
 router
     .route('/:id')
     .get(checkAuth, getPatient)
-    .put(checkAuth, updatePatient)
     .delete(checkAuth, deletePatient);
+
+router.get('/trip/allTrip', getAllTrips);
+router.put('/trip/:id',checkAuth, bookTrip);
 
 
     
