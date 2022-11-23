@@ -20,6 +20,11 @@ const getPatients = async (req, res) => {
     res.json(patients);
 }
 
+const getTripsBookedPassenger = async (req, res) =>{
+    const patients = await Patient.find().where('passenger').equals(req.vet);
+    res.json(patients);
+}
+
 const getAllTrips = async (req, res) => {
     const trips = await Patient.find().where('status').equals('Disponible');
     res.json(trips);
@@ -95,5 +100,6 @@ export {
     getAllTrips,
     getPatient,
     bookTrip,
-    deletePatient
+    deletePatient,
+    getTripsBookedPassenger
 }

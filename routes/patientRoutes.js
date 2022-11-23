@@ -5,7 +5,8 @@ import {
     getPatients,
     getAllTrips,
     getPatient,
-    deletePatient
+    deletePatient,
+    getTripsBookedPassenger
 } from '../controllers/patientController.js'
 import checkAuth from '../middlewares/autMiddleware.js';
 
@@ -24,6 +25,7 @@ router
     .delete(checkAuth, deletePatient);
 
 router.get('/trip/allTrip', getAllTrips);
+router.get('/trip/passenger',checkAuth, getTripsBookedPassenger);
 router.put('/trip/:id',checkAuth, bookTrip);
 
 
