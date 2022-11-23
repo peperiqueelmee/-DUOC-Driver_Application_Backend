@@ -1,4 +1,6 @@
 import Patient from "../models/Patient.js"
+import Vet from "../models/Vet.js";
+import {confirmEmailTripDriver, confirmEmailTripPassenger} from "../helpers/confirmEmailTrip.js";
 
 
 
@@ -20,7 +22,7 @@ const getPatients = async (req, res) => {
     res.json(patients);
 }
 
-const getTripsBookedPassenger = async (req, res) =>{
+const getTripsBookedPassenger = async (req, res) => {
     const patients = await Patient.find().where('passenger').equals(req.vet);
     res.json(patients);
 }
@@ -57,12 +59,41 @@ const bookTrip = async (req, res) => {
         res.status(404).json({ msg: "No encontrado" });
     }
 
+    //Driver
+    const driver = await Vet.findById(trip.vet);
+
+    //Passenger
+    const passenger = await Vet.findById(req.vet._id);
+
     //Update trip
     trip.name_passenger = req.body.name_passenger;
     trip.passenger = req.vet._id;
     trip.status = "Confirmado";
     try {
         const tripUpdated = await trip.save();
+
+        //Send email driver
+        confirmEmailTripDriver({
+            driverEmail: driver.email,
+            driverName: driver.name,
+            destinyTrip: trip.destiny,
+            dateTrip: trip.date,
+            hourTrip: trip.hour,
+            passengerEmail: passenger.email,
+            passengerName: passenger.name
+        });
+
+        //Send email passenger
+        confirmEmailTripPassenger({
+            driverEmail: driver.email,
+            driverName: driver.name,
+            destinyTrip: trip.destiny,
+            dateTrip: trip.date,
+            hourTrip: trip.hour,
+            passengerEmail: passenger.email,
+            passengerName: passenger.name
+        });
+
         return res.json(tripUpdated);
     } catch (error) {
         console.log(error);
